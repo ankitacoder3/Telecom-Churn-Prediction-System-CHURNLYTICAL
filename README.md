@@ -8,7 +8,7 @@
 <li> Steps for execution</li>
   <li>How to Use the files</li>
 <li> Usage</li>
-<li>Screenshots</li>
+<li>Sample Screenshots</li>
 </details>
 </br>
 
@@ -78,7 +78,7 @@ The dataset used for this project can be found [here](https://github.com/menon12
 <p align="right"><a href="#readme-top">back to top</a></p>
 </br>
 
-## Screenshots
+## Sample Screenshots
 * Home page
  ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/73939061/d2ee15df-d778-4058-8690-811ab7ad68a8)
 
