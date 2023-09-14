@@ -80,11 +80,11 @@ The dataset used for this project can be found [here](https://github.com/menon12
 
 ## Screenshots
 * ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/73939061/d2ee15df-d778-4058-8690-811ab7ad68a8)
-*  ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/79465443/3d832666-de40-40c3-b1e5-9ff8a6813d31)
-
+* ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/79465443/3d832666-de40-40c3-b1e5-9ff8a6813d31)
+<!--
 * <img width="994" alt="Screenshot 2023-08-20 at 1 03 31 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/3d832666-de40-40c3-b1e5-9ff8a6813d31">
 * <img width="1440" alt="Screenshot 2023-08-20 at 1 04 00 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/c0ee3d08-943d-4182-9456-ebdbc31fa54e">
-* <img width="1440" alt="Screenshot 2023-08-20 at 1 04 59 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/9556daa2-f9dc-4ca2-a333-0378bdcefd0b">
+* <img width="1440" alt="Screenshot 2023-08-20 at 1 04 59 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/9556daa2-f9dc-4ca2-a333-0378bdcefd0b"> -->
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 </br>
