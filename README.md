@@ -66,7 +66,7 @@ This command will start the Streamlit application and open it in your default we
 
 ### Dataset
 
-The dataset used for this project can be found [here](https://github.com/menon123/Telecom-Churn-Predictor/blob/main/WA_Fn-UseC_-Telco-Customer-Churn.csv), and it contains the necessary information for training and testing the churn prediction models.
+The dataset used for this project can be found [here](https://github.com/ankitacoder3/CHURNLYTICAL/Telecom-Churn-Predictor/blob/main/WA_Fn-UseC_-Telco-Customer-Churn.csv), and it contains the necessary information for training and testing the churn prediction models.
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 </br>
