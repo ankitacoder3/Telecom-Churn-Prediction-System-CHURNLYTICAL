@@ -1,4 +1,4 @@
-# Telecom Churn Prediction Project
+# Telecom-Churn-Prediction-System-CHURNLYTICAL
 
 This project aims to predict customer churn in a telecom company using machine learning techniques. It includes two main parts: Exploratory Data Analysis (EDA) and Model Building. The project is designed to facilitate prediction for a single customer or a batch of customers by providing a CSV file for the batch.
 <img width="1440" alt="Screenshot 2023-08-20 at 1 01 32 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/36eb21de-e57a-43ea-9c0f-91bdfeacee1f">
