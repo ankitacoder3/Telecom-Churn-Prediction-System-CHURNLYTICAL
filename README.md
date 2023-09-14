@@ -86,8 +86,14 @@ The dataset used for this project can be found [here](https://github.com/menon12
   
 * Login-Logout page
 * ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/73939061/6a02acd3-9367-4758-ae5f-e1cef6b57296)
+  
+    <br>
+    
 * Churn Prediction for ```One customer``` page
 * ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/73939061/a2b7c6d9-166f-4182-baf6-8da1e43368ee)
+
+    <br>
+    
 * Churn Prediction for ```Many customers``` page
 * ![image](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/assets/73939061/dc4ebc3a-235b-4421-9e1c-45d13ee961d5)
 
