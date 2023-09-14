@@ -1,29 +1,35 @@
+<a name="readme-top"></a>
 # Telecom-Churn-Prediction-System-CHURNLYTICAL
 
+<details>
+  <summary color= blue >Table of Contents</summary>
+<li>Summary</li>
+<li> Prerequisites and Techstack</li>
+<li> Steps for execution</li>
+<li> Usage</li>
+<li>Contributing</li>
+</details>
+</br>
+
+## Introduction
 This project aims to predict customer churn in a telecom company using machine learning techniques. It includes two main parts: Exploratory Data Analysis (EDA) and Model Building. The project is designed to facilitate prediction for a single customer or a batch of customers by providing a CSV file for the batch.
 <img width="1440" alt="Screenshot 2023-08-20 at 1 01 32 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/36eb21de-e57a-43ea-9c0f-91bdfeacee1f">
 <img width="994" alt="Screenshot 2023-08-20 at 1 03 31 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/3d832666-de40-40c3-b1e5-9ff8a6813d31">
 <img width="1440" alt="Screenshot 2023-08-20 at 1 04 00 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/c0ee3d08-943d-4182-9456-ebdbc31fa54e">
 <img width="1440" alt="Screenshot 2023-08-20 at 1 04 59 AM" src="https://github.com/menon123/Telecom-Churn-Predictor/assets/79465443/9556daa2-f9dc-4ca2-a333-0378bdcefd0b">
 
-## Prerequisites
-
-Before running the application, ensure that you have the following installed:
-
+## Prerequisites and Techstack
 - Python (version 3.8)
 - Streamlit (version 1.14.0)
 - Pandas (version 1.4.3)
 - Scikit-learn (version 1.0.2)
 
-You can install the required dependencies using the following command:
-
-
-## How to Run
+## Steps for execution
 
 To run the application, execute the following command in the terminal:
-
-`streamlit run churnlytical.py`
-
+```sh
+streamlit run churnlytical.py
+```
 
 This command will start the Streamlit application and open it in your default web browser(localhost:8501).
 
