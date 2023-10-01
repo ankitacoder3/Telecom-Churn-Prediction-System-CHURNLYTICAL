@@ -21,6 +21,8 @@
 * To build ```CHURNLYTICAL prediction model``` two main parts were implemented:
   * Exploratory Data Analysis (EDA)
   * Model Building
+ 
+  <br>
 
 * <b> Project Structure</b>
 
