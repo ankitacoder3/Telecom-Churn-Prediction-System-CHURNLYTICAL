@@ -1,6 +1,8 @@
 <a name="readme-top"></a>
 # Telecom-Churn-Prediction-System-CHURNLYTICAL
 
+```CHURNLYTICAL``` ```predicts``` ```customer churn output``` in a ```telecom``` company.
+
 <details>
   <summary color= blue >Table of Contents</summary>
 <li>Introduction </li>
@@ -14,7 +16,7 @@
 
 
 ## Introduction 
-* The project ```CHURNLYTICAL``` predicts ```customer churn output``` in a telecom company
+* The project ```CHURNLYTICAL``` predicts ```customer churn output``` in a telecom company.
 * To implement this machine learning techniques, such as decision tree classifier, catboost classifier, etc, are used.
 * To build ```CHURNLYTICAL prediction model``` two main parts were implemented:
   * Exploratory Data Analysis (EDA)
@@ -64,9 +66,9 @@ This command will start the Streamlit application and open it in your default we
 
 
 
-### Dataset
+4. **Dataset**:
 
-The dataset used for this project can be found [here](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/blob/main/CHURNLYTICAL/WA_Fn-UseC_-Telco-Customer-Churn.csv), and it contains the necessary information for training and testing the churn prediction models.
+    The dataset used for this project can be found [here](https://github.com/ankitacoder3/Telecom-Churn-Prediction-System-CHURNLYTICAL/blob/main/CHURNLYTICAL/WA_Fn-UseC_-Telco-Customer-Churn.csv), and it contains the necessary information for training and testing the churn prediction models.
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 </br>
