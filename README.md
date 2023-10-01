@@ -22,13 +22,13 @@
   * Exploratory Data Analysis (EDA)
   * Model Building
 
-### Project Structure
+* <b> Project Structure</b>
 
-The project is structured as follows:
-
-- `churnlytical.py`: This is the main application file where Streamlit code is implemented to run the application.
-- `Telco_churn_Analysis_EDA.ipynb`: This Jupyter Notebook contains Exploratory Data Analysis (EDA) of the telecom churn dataset.
-- `Telco_churn_Analysis_Model_Building.ipynb`: This Jupyter Notebook contains the code for building and training the churn prediction models.
+    The project is structured as follows:
+    
+    - `churnlytical.py`: This is the main application file where Streamlit code is implemented to run the application.
+    - `Telco_churn_Analysis_EDA.ipynb`: This Jupyter Notebook contains Exploratory Data Analysis (EDA) of the telecom churn dataset.
+    - `Telco_churn_Analysis_Model_Building.ipynb`: This Jupyter Notebook contains the code for building and training the churn prediction models.
 
 <p align="right"><a href="#readme-top">back to top</a></p>
 </br>
