@@ -107,7 +107,7 @@ def signup():
             if isValid_Password(new_password)==1 or isValid_Username(new_user)==1:
                 content4.error("Password should be of length 6-15 characters. Password can have only alphabets and numbers.")
                 if sign:
-                    content6.error("Signup failed. Kindly check the username and password entered.")
+                    content6.error("Signup Failed! Kindly check the username and password entered.")
             elif sign:
                 create_usertable()
                 add_userdata(new_user,make_hashes(new_password),new_comp_name,new_comp_add,new_fullname,new_email,new_ph_1,new_ph_2)
@@ -196,21 +196,9 @@ def profile():
     #content2.caption('Incase, you need to change any details send a mail to the support.')
     content1.info('Once the form is submitted, values previously entered will not be visible to the user upon refreshing.')
     content2.success('Before submitting, crosscheck all fields. The user can edit their details by doing the following steps: refresh -> login -> ENTER \'ALL\' DETAILS AGAIN WITH THE CHANGED DETAIL -> submit .')
-    
 
     #checking if profile alrealy filled
-    if st.session_state['fullname']!="":
-        st.session_state['profile_submit']==True
-
-    if  st.session_state['profile_submit']==True:
-        content3.text_input("Username:",value=st.session_state['username'],disabled=True)
-        content4.text_input("Fullname:",value=st.session_state['fullname'],disabled=True)
-        content5.text_input("Company Name:",value=st.session_state['company_name'],disabled=True)
-        content6.text_area("Company Address:",value=st.session_state['company_add'],disabled=True)
-        content7.text_input("E-mail:",value=st.session_state['e-mail'],disabled=True)
-        content8.text_input("Phone no. 1:",value=st.session_state['phone no. 1'],disabled=True)
-        content9.text_input("Phone No. 2:",value=st.session_state['phone no. 2'],disabled=True)
-    else:
+    if  st.session_state['profile_submit']==False:
         content3.text_input("Username:",value=st.session_state['username'],disabled=True)
         val1=content4.text_input("Fullname:",placeholder="<firstname> <middlename> <lastname>")
         st.session_state['fullname']=val1
@@ -224,33 +212,46 @@ def profile():
         st.session_state['phone no. 1']=val5
         val6=content9.text_input("Phone No. 2:",placeholder="XXXXXXXXXX {10 digits}")
         st.session_state['phone no. 2']=val6
+        submit_clicked = content10.button('submit', key="submit_button")
 
         #if content10.button('submit') and isValid_input(val1,val2,val3,val4,val5,val6)==0:
-        if content10.button('submit') and (val1 and val2 and val3 and val4 and val5 and val6) :
-            check=isValid_input(val1,val2,val3,val4,val5,val6)
-            if check==0:
-                st.session_state['profile_submit']=True
-                content11.success('Submitted details successfully.')
-                update_user_details(val2,val3,val1,val4,val5,val6)
-                content10.write("")
-
-            elif check==1:
-                content11.warning('Kindly enter "correct format of full name" to submit.(Should have space " ") ')
-            elif check==2:
-                content11.warning('Kindly enter "correct format of company address" to submit.(Should have symbols  "," and "-") ')
-            elif check==3:
-                content11.warning('Kindly enter "correct email address" to submit.(Should have expressions "@" and ".com") ')
-            elif check==4:
-                content11.warning('Kindly enter "correct no. of digits for \'phone no.1\' and for \'phone no.2\' to submit.(Should have "10 digits" for both) ')
-            elif check==5:
-                content11.warning('Kindly enter "only digits for \'phone no.1\' " to submit. ')
-            elif check==6:
-                content11.warning('Kindly enter "only digits for \'phone no.2\' " to submit. ')
-
-        else:
+        check=isValid_input(val1,val2,val3,val4,val5,val6)
+        if check==1:
+            content11.warning('Fullname: Kindly enter "correct format of full name" to submit. (Should have space " ") ')
+        elif check==2:
+            content11.warning('Company Name: Kindly enter company name. ')
+        elif check==3:
+            content11.warning('Company Address: Kindly enter "correct format of company address" to submit. (Should have symbols  "," and "-") ')
+        elif check==4:
+            content11.warning('E-mail: Kindly enter "correct email address" to submit. (Should have expressions "@" and ".com") ')
+        elif check==5:
+            content11.warning('Phone no. 1: Kindly enter "correct no. of digits for \'phone no. 1\' " to submit. (Should have "10 digits only") ')
+        elif check==6:
+            content11.warning('Phone no. 2: Kindly enter "correct no. of digits for \'phone no. 2\'" to submit. (Should have "10 digits only") ')
+        elif check==7:   
             content11.warning('Kindly enter all details to submit.')
-            
-            
+        elif check==0:
+            content11.success('All details entered in valid format. Please "Submit"!')
+
+            if submit_clicked and (val1 and val2 and val3 and val4 and val5 and val6) :
+                st.session_state['profile_submit']=True
+                refresh()
+                content11.success('Submitted details successfully!')
+                update_user_details(val2,val3,val1,val4,val5,val6)
+            elif (val1 and val2 and val3 and val4 and val5 and val6) :
+                content11.success('All details entered in valid format. Please "Submit"!')
+            else:
+                content11.warning('Kindly enter all details in valid format to submit...')
+    else:
+        content10.write("")
+        content3.text_input("Username:",value=st.session_state['username'],disabled=True)
+        content4.text_input("Fullname:",value=st.session_state['fullname'],disabled=True)
+        content5.text_input("Company Name:",value=st.session_state['company_name'],disabled=True)
+        content6.text_area("Company Address:",value=st.session_state['company_add'],disabled=True)
+        content7.text_input("E-mail:",value=st.session_state['e-mail'],disabled=True)
+        content8.text_input("Phone no. 1:",value=st.session_state['phone no. 1'],disabled=True)
+        content9.text_input("Phone No. 2:",value=st.session_state['phone no. 2'],disabled=True)
+
 
 #6-online churn analysis
 def nav_online():
@@ -324,6 +325,7 @@ def nav_batch():
     if file_upload is not None:
         df = pd.read_csv(file_upload)
         print(df.head())
+        st.write(df.head())  # Display the uploaded file's contents #d
         #df.drop("Churn",inplace=True,axis=1)
         
         #temp
@@ -335,7 +337,7 @@ def nav_batch():
         if(st.button('Predict')):
             
             #temp
-            cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService','MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
+            cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents',    'PhoneService','MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
 
                 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
 
@@ -343,19 +345,25 @@ def nav_batch():
 
                 'TotalCharges','tenure_group']
     
-            expected_features = ohe.get_feature_names_out()  # Features expected by the OneHotEncoder
-            actual_features = df[cols].columns.tolist()  # Features in the current data
-            
-            missing_features = set(expected_features) - set(actual_features)
-            
+ # Ensure all required columns are present
+            missing_features = set(cols) - set(df.columns)
             if missing_features:
-                print(f"Missing features: {missing_features}")
+                st.error(f"Missing features in uploaded file: {missing_features}")
+                return
+
+            # Align DataFrame columns with encoder
+            try:
+                df_encoded = ohe.transform(df[cols])
+            except ValueError as e:
+                st.error(f"Encoding Error: {e}")
+                return
+
                 #temp
             
 
             for i in range(1,len(df)-1):
 
-                predictor= df.iloc[i:i+1, 1:]  # Extract a single row of features
+                predictor= df.iloc[i:i+1, :]  # Extract a single row of features
                 sb=preprocess_predictor_batch(predictor)
                 
                  # Check the result of the prediction (assuming `sb` is a scalar)

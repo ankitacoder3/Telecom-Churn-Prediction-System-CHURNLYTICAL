@@ -73,7 +73,7 @@ def init():
         st.session_state['company_add']=""
         
     if 'profile_submit' not in st.session_state:
-        st.session_state['profile_submit']=False
+        st.session_state['profile_submit']=False  
 
 def logout():
         st.session_state['logged_in']=False
@@ -98,27 +98,21 @@ def global_var():
     new_ph_2=st.session_state['phone no. 2']
 
 def isValid_input(val1,val2,val3,val4,val5,val6):
-    res=0
-    if(val1 and val2 and val3 and val4 and val5 and val6):
-        res=0
-        
-        if(" " not in val1):
-            res=1
-        elif(("," or "-")not in val3):
-            res=2
-        elif(("@" or".com") not in val4):
-            res=3
-        elif(len(val5)!=10 or len(val6)!=10):
-            res=4
-        elif(val5.isdigit()):
-            if(val6.isdigit()):
-                res=0
-            else:
-                res=6
-        else:
-            res=5
+    res=7
+    if(" " not in val1):
+        res=1
+    elif(not val2):
+        res=2
+    elif(("," or "-")not in val3):
+        res=3
+    elif(("@" or".com") not in val4):
+        res=4
+    elif(len(val5)!=10 or not(val5.isdigit())):
+        res=5
+    elif(len(val6)!=10 or not(val6.isdigit())):
+        res=6
     else:
-        res=7
+        res=0
     return res
 
 def update_profile(res):
@@ -128,7 +122,7 @@ def update_profile(res):
     #to_do
     u_db = pd.DataFrame(res,columns =["Username","Password","company_name","company_address","fullname","email","phone_num1","phone_num2"] )
     st.dataframe(u_db)
-
+    st.write('hi')
     #st.session_state['fullname']=check_profile()
     #st.write("2:",st.session_state['fullname'])
 
@@ -137,38 +131,45 @@ def update_profile(res):
 
 def preprocess_predictor_batch(data):
     
-    # loading encoders
+    # loading encoders and scalers
     with open('../Model/Model_Processing/StandardScaler', 'rb') as f:
         ss = pickle.load(f)
     with open('../Model/Model_Processing/OneHotEncoder', 'rb') as f:
         ohe = pickle.load(f)
 
-    # columns
+    # separate columns into categorical and numerical
     cat_cols = [col for col in data.columns if data[col].dtype == 'object'] # categorical columns
     num_cols = [col for col in data.columns if data[col].dtype != 'object'] # numerical columns
 
     # predictors
-    data[num_cols] = ss.transform(data[num_cols])  # standard scaler for predictor
-    data_ohe = ohe.transform(data[cat_cols]) # one-hot-encoding for predictor
-    col_ohe = ohe.get_feature_names_out(cat_cols)
+    # Preprocess numerical columns
+    if num_cols:  # Check if there are numerical columns
+        data[num_cols] = ss.transform(data[num_cols])  # Apply standard scaling
 
-    # data after preprocessingget_feature_names_out 
-    data_ohe_df = pd.DataFrame(data_ohe, columns = col_ohe, index = data.index)
-    data_final = pd.concat([data.drop(columns=cat_cols), data_ohe_df], axis=1)
+    # Preprocess categorical columns
+    if cat_cols:  # Check if there are categorical columns
+        data_ohe = ohe.transform(data[cat_cols])  # Apply one-hot encoding
+        col_ohe = ohe.get_feature_names_out(cat_cols)
+        data_ohe_df = pd.DataFrame(data_ohe, columns=col_ohe, index=data.index)
+    else:
+        data_ohe_df = pd.DataFrame(index=data.index)  # Empty DataFrame if no categorical data
 
-    # store data
+    # Combine preprocessed numerical and categorical data
+    data_final = pd.concat([data[num_cols], data_ohe_df], axis=1)
+
+    # load model
     with open('../Model/Churnlytical_Model.sav', 'rb') as f:
         model = pickle.load(f)
 
     # predicting
     single = model.predict(data_final)
     probability = model.predict_proba(data_final)
-    return single    
+    return single , probability
 
 
 def preprocess_predictor(data):
 
-    # loading encoders
+    # loading encoders and scalers
     with open('../Model/Model_Processing/StandardScaler', 'rb') as f:
         ss = pickle.load(f)
     with open('../Model/Model_Processing/OneHotEncoder', 'rb') as f:
@@ -187,7 +188,7 @@ def preprocess_predictor(data):
     data_ohe_df = pd.DataFrame(data_ohe, columns = col_ohe, index = data.index)
     data_final = pd.concat([data.drop(columns=cat_cols), data_ohe_df], axis=1)
 
-    # store data
+    # load model
     with open('../Model/Churnlytical_Model.sav', 'rb') as f:
         model = pickle.load(f)
 
