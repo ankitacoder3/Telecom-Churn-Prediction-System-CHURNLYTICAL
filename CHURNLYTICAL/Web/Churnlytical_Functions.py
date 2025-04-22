@@ -3,11 +3,10 @@
 import streamlit as st
 import pandas as pd
 import hashlib
-
 import pickle
 import warnings
-import base64
 warnings.filterwarnings('ignore')
+
 
 # 1- Login functions
 
@@ -20,6 +19,9 @@ def check_hashes(password,hashed_text):
 	return False
     
 def isValid_Password(password):
+    #returns 0 if correct 
+    #returns 1 if incorrect
+
     res=0
     if len(password)!=0 and (len(password)<6 or len(password)>15):
         res=1
@@ -30,9 +32,10 @@ def isValid_Password(password):
     return res
 
 def isValid_Username(u):
-    res=0
     #returns 0 if correct 
     #returns 1 if incorrect
+
+    res=0
     if(("@" or".com") not in u):
         res=1 
     return res
@@ -86,7 +89,10 @@ def logout():
         st.session_state['phone no. 1']=""
         st.session_state['phone no. 2']=""
         st.session_state['company_add']=""
-        #st.session_state['profile_submit']=False #decomment if update_profile works
+
+        '''TO BE IMPLEMENTED'''
+        #Uncomment below line if update_profile works
+        #st.session_state['profile_submit']=False
 
 def global_var():
     global new_fullname,new_comp_name,new_comp_add,new_email,new_ph_1,new_ph_2
@@ -115,20 +121,58 @@ def isValid_input(val1,val2,val3,val4,val5,val6):
         res=0
     return res
 
-def update_profile(res):
+'''TO BE IMPLEMENTED'''
+def update_profile(res): 
     #gets fullname to check for if profile filled
     #st.write("1:",st.session_state['fullname'])
-    
     #to_do
     u_db = pd.DataFrame(res,columns =["Username","Password","company_name","company_address","fullname","email","phone_num1","phone_num2"] )
     st.dataframe(u_db)
-    st.write('hi')
+    st.write('db rec')
     #st.session_state['fullname']=check_profile()
     #st.write("2:",st.session_state['fullname'])
 
 
 # 3- Model functions (or interacting with model)
 
+# i- Online Mode
+def preprocess_predictor(data):
+
+    # loading encoders and scalers
+    with open('../Model/Model_Processing/StandardScaler', 'rb') as f:
+        ss = pickle.load(f)
+    with open('../Model/Model_Processing/OneHotEncoder', 'rb') as f:
+        ohe = pickle.load(f)
+        
+    # columns
+    cat_cols = [col for col in data.columns if data[col].dtype == 'object'] # categorical columns
+    num_cols = [col for col in data.columns if data[col].dtype != 'object'] # numerical columns
+
+    # predictors
+    data[num_cols] = ss.transform(data[num_cols])  # standard scaler for predictor
+    data_ohe = ohe.transform(data[cat_cols]) # one-hot-encoding for predictor
+    col_ohe = ohe.get_feature_names_out(cat_cols)
+
+    # data after preprocessing
+    data_ohe_df = pd.DataFrame(data_ohe, columns = col_ohe, index = data.index)
+    data_final = pd.concat([data.drop(columns=cat_cols), data_ohe_df], axis=1)
+
+    # load model
+    with open('../Model/Churnlytical_Model.sav', 'rb') as f:
+        model = pickle.load(f)
+
+    # predicting
+    single = model.predict(data_final)
+    probability = model.predict_proba(data_final)
+    if single == 1:
+        st.error("The customer is likely to be Churn!!")
+        st.warning("Confidence = {}".format(probability[:,1] * 100) + '%')
+    else:
+        st.success("The customer is likely to CONTINUE !!")
+        st.success("The Confidence level is about {}".format(*probability[:, 0] * 100) + '%')
+        
+
+# ii- Batch Mode
 def preprocess_predictor_batch(data):
     
     # loading encoders and scalers
@@ -164,44 +208,7 @@ def preprocess_predictor_batch(data):
     # predicting
     single = model.predict(data_final)
     probability = model.predict_proba(data_final)
-    return single , probability
-
-
-def preprocess_predictor(data):
-
-    # loading encoders and scalers
-    with open('../Model/Model_Processing/StandardScaler', 'rb') as f:
-        ss = pickle.load(f)
-    with open('../Model/Model_Processing/OneHotEncoder', 'rb') as f:
-        ohe = pickle.load(f)
-        
-    # columns
-    cat_cols = [col for col in data.columns if data[col].dtype == 'object'] # categorical columns
-    num_cols = [col for col in data.columns if data[col].dtype != 'object'] # numerical columns
-
-    # predictors
-    data[num_cols] = ss.transform(data[num_cols])  # standard scaler for predictor
-    data_ohe = ohe.transform(data[cat_cols]) # one-hot-encoding for predictor
-    col_ohe = ohe.get_feature_names_out(cat_cols)
-
-    # data after preprocessing
-    data_ohe_df = pd.DataFrame(data_ohe, columns = col_ohe, index = data.index)
-    data_final = pd.concat([data.drop(columns=cat_cols), data_ohe_df], axis=1)
-
-    # load model
-    with open('../Model/Churnlytical_Model.sav', 'rb') as f:
-        model = pickle.load(f)
-
-    # predicting
-    single = model.predict(data_final)
-    probability = model.predict_proba(data_final)
-    if single == 1:
-        st.error("The customer is likely to be Churn!!")
-        st.warning("Confidence = {}".format(probability[:,1] * 100) + '%')
-    else:
-        st.success("The customer is likely to continue !!")
-        st.warning("The Confidence level is about {}".format(*probability[:, 0] * 100) + '%')
-        st.write('---')
+    return (single,probability)
 
         
 # End of CHURNLYTICAL_Functions.py

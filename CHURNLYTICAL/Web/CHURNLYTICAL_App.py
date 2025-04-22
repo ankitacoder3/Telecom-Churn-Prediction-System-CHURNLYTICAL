@@ -1,13 +1,19 @@
-#modules
+# importing modules
 import streamlit as st
 import pandas as pd
 from PIL import Image
 from Churnlytical_Functions import *
 import sqlite3 as sq
+import base64
 
-#images
+
+# UI setup
+
+# Logo Image
 logo = Image.open('Churnlytical_Logo.png')
-#load= Image.open('2.png')
+
+'''TO BE IMPLEMENTED'''
+# Adding background
 def add_bg():
         st.markdown(
             f"""
@@ -21,9 +27,9 @@ def add_bg():
             """,
             unsafe_allow_html=True
         )    
-#add_bg
+# add_bg()
 
-#space containers
+# Space containers
 web_name=st.empty()
 heading=st.empty()
 
@@ -43,7 +49,7 @@ content9=st.empty()
 content10=st.empty()
 content11=st.empty()
 
-#refreshing space containers
+# Refreshing space containers
 def refresh(): 
     content1.write("")
     content2.write("")
@@ -57,7 +63,9 @@ def refresh():
     content10.write("")
     content11.write("")
 
-#database functions
+
+# Database Functions
+
 connect = sq.connect('../Data/Churnlytical_UserData.db')
 c = connect.cursor()
 
@@ -92,9 +100,10 @@ def check_profile():
     data=c.fetchone()
     return data
 
-#functions
 
-#1-login-signup
+# Functions
+
+# 1-Login: Sign-up function
 def signup():
         refresh()
         global_var()
@@ -124,7 +133,7 @@ def signup():
         content7.write("")
         content9.write("")
 
-#2-login-main
+# 2-Login: Main-login function
 def login():
         refresh()
         heading.subheader("Login Section")
@@ -142,7 +151,7 @@ def login():
             if result:
                 st.session_state['logged_in']=True
 
-            #logout_button
+            # Logging out
             if (result and st.session_state['logged_in']==True) :
                 content7.success("Logged In as {}".format(username))
                 login_logout.text("Logout")
@@ -160,7 +169,7 @@ def login():
         else:
             content10.caption("To submit, enter username and password.")
 
-#3-nav-home
+# 3-Navigation: Home function
 def intro():
     refresh()
     heading.subheader("Introduction")
@@ -171,7 +180,7 @@ def intro():
     content8.warning(" ***If your company is also suffering from this problem of customer churn, go ahead and sign-up to analyze the behaviour of your customers.*** Thereby, increasing your company's profits. ")
     content9.caption("To 'sign-up', select option 'SignUp' under the 'Login Menu' drop-down list. ")
 
-#4-nav-2
+# 4-Navigation: Task Menu function
 def nav2():
     task = side.selectbox("Task Menu",["LOGOUT","Profile","Churn Analysis-Online (1 customer)","Churn Analysis-Batch (many customers)"])
     if task=="LOGOUT":
@@ -181,23 +190,26 @@ def nav2():
         refresh()
         heading.subheader("Profile")
         profile()
-    elif task=="Churn Analysis-Online (1 customer)":
+    elif task=="Churn Analysis-Online (1 record)":
         refresh()
-        heading.subheader("Analysis: Online (1 customer)")
+        heading.subheader("Analysis: Online Mode (single record)")
         nav_online()
-    elif task == "Churn Analysis-Batch (many customers)":
+    elif task == "Churn Analysis-Batch (many records)":
         refresh()
-        heading.subheader("Analysis: Batch (many customers)")
+        heading.subheader("Analysis: Batch Mode (multiple records)")
         nav_batch()
 
-#5-profile
+# 5-Profile function
 def profile():
+
+    # Uncomment and replace if required
     #content1.caption('Before submitting crosscheck all fields as they cannot be changed later.')
     #content2.caption('Incase, you need to change any details send a mail to the support.')
+    
     content1.info('Once the form is submitted, values previously entered will not be visible to the user upon refreshing.')
     content2.success('Before submitting, crosscheck all fields. The user can edit their details by doing the following steps: refresh -> login -> ENTER \'ALL\' DETAILS AGAIN WITH THE CHANGED DETAIL -> submit .')
 
-    #checking if profile alrealy filled
+    # Checking if profile is alrealy filled
     if  st.session_state['profile_submit']==False:
         content3.text_input("Username:",value=st.session_state['username'],disabled=True)
         val1=content4.text_input("Fullname:",placeholder="<firstname> <middlename> <lastname>")
@@ -214,7 +226,6 @@ def profile():
         st.session_state['phone no. 2']=val6
         submit_clicked = content10.button('submit', key="submit_button")
 
-        #if content10.button('submit') and isValid_input(val1,val2,val3,val4,val5,val6)==0:
         check=isValid_input(val1,val2,val3,val4,val5,val6)
         if check==1:
             content11.warning('Fullname: Kindly enter "correct format of full name" to submit. (Should have space " ") ')
@@ -253,31 +264,25 @@ def profile():
         content9.text_input("Phone No. 2:",value=st.session_state['phone no. 2'],disabled=True)
 
 
-#6-online churn analysis
+# 6-Churn Analysis: Online Mode function
 def nav_online():
-    content3.write(" ")
-    st.title('Telecom Churn Prediction App')
-    st.write('---')
+    content2.subheader(f'''***Telecom Churn Prediction FORM-A :- for one customer***''') 
+    content3.info(f'''The "Churn Prediction FORM-A" is a ***prediction form*** used to detect whether a Customer will Churn or not based on his behavior, details and connection type.''')
 
-    name = st.text_input('Enter your name:')
-    st.subheader(f'Hi {name},')
-    st.markdown(f'''The Telecom Churn Prediction App is used to detect whether a Customer will Churn or not Churn based on his behavior and features. 
-
-            Here, the user has to select the relevant options below to generate results. The generated results are predicted by the 
-
-            trained model with confidence levels, these predictions are made after training the model with the attributes and 
-
-            characteristics of Churners & Non-Churners.''')
-    data = pd.read_csv("../Data/Churnlytical_DataBase.csv")
-    #predict_online()        
-
+    name = content6.text_input('Enter your name:')
+    if(name):
+        content6.caption("")
+         
+    content7.subheader(f'Hi {name},')
+    content9.markdown(f'''In FORM-A, the user has to select the relevant options below to get the Churn Prediction Output.               
+                      The generated results are predicted by the 
+            trained model with confidence levels, these predictions are made after training the model with the attributes and characteristics of Churners & Non-Churners.''')
     
+    data = pd.read_csv("../Data/Churnlytical_DataBase.csv")   
+
     gender = st.radio('Select your Gender:', ('Male', 'Female'))
-
     senior_citizen = st.radio('Are you a Senior Citizen?', ('No', 'Yes'))
-
     partner = st.radio('Do you have a partner?', ('Yes', 'No'))
-
     dependents = st.radio('Do you have any dependents?', ('Yes', 'No'))
     phone_service = st.radio('Do you use phone services?', ('Yes', 'No'))
     multiple_lines = st.radio('Do you use multiple lines?', ('Yes', 'No'))
@@ -290,106 +295,115 @@ def nav_online():
     streaming_movies = st.radio('Do you steam movies?', ('Yes', 'No'))
     paperless_billing = st.radio('Do you use paperless billing?', ('Yes', 'No'))
     contract = st.selectbox("What type of Contract Term are you subscribed?",['Month-to-month', 'One year', 'Two year'])
-    st.success(f"Contract Type - {contract}")
     monthly_charges = st.slider('Monthly Charges (USD)', min(data['MonthlyCharges']), max(data["MonthlyCharges"]))
     total_charges = st.slider('Total Charges (USD)', min(data['TotalCharges']), max(data["TotalCharges"]))
     payment_method = st.selectbox("What type of payment method do you use :",['Electronic check', 'Mailed check', 'Bank transfer (automatic)','Credit card (automatic)'])
     tenure_group = st.selectbox("How many months have you been using the services?", ['1 - 12', '13 - 24', '25 - 36', '37 - 48', '61 - 72', '49 - 60'], help = 'Tenure')
-    input = [[gender, senior_citizen, partner, dependents, phone_service, multiple_lines, internet_service, online_security,
+    input = [[gender, senior_citizen, partner, dependents, phone_service, multiple_lines, internet_service, online_security,online_backup, 
+              device_protection, tech_support, streaming_tv, streaming_movies, contract, paperless_billing, payment_method, monthly_charges, 
+              total_charges,tenure_group]]
 
-                online_backup, device_protection, tech_support, streaming_tv, streaming_movies, contract, paperless_billing, 
-
-                payment_method, monthly_charges, total_charges,tenure_group]]
-
-    cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService','MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
-
-                'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
-
-                'Contract', 'PaperlessBilling', 'PaymentMethod', 'MonthlyCharges',
-
-                'TotalCharges','tenure_group']
+    cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService','MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 
+            'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'MonthlyCharges', 
+            'TotalCharges','tenure_group']
     
     # creating a dataframe for inputs
     predictor = pd.DataFrame(input, columns=cols)
 
+    st.write(" ")
+    st.write(" ")
     if(st.button('Predict')):
-
+        st.write(" ")
+        st.write(" ")
         preprocess_predictor(predictor)
+        st.write('---')
 
-#5-batch churn analysis
+
+# 7-Churn Analysis: Batch Mode function
 def nav_batch():
+    content2.subheader(f'''***Telecom Churn Prediction FORM-B :- for multiple customers***''') 
+    content3.info(f'''The "Churn Prediction FORM-B" is a ***prediction form*** used to detect which customers are at risk of Churning, in a given Batch of Customers. This is based on their behavior, details and connection type.''')
+
+    content6.markdown(f'''In FORM-B, the user has to input a ***CSV file*** in the ***file input field*** below.''')
     
-    risk=[]
-    file_upload = st.file_uploader("Upload csv file for predictions", type=["csv"])
+    content7.warning(f'''The CSV file should be given in the mentioned Format:-   
+                    gender, SeniorCitizen, Partner, Dependents, PhoneService,
+                    MultipleLines, InternetService, OnlineSecurity, OnlineBackup,
+                    DeviceProtection, TechSupport, StreamingTV, StreamingMovies,
+                    Contract, PaperlessBilling, PaymentMethod, tenure_group''')
+
+    risk = []
+    conf = []
+    details = []
+    fields_to_keep = ['gender', 'SeniorCitizen', 'Partner', 'Dependents']
+
+    content8.subheader("Input CSV file:")
+    file_upload = content9.file_uploader("Upload CSV file in the correct format, for the Batch Churn Predictions:-", type=["csv"])
 
     if file_upload is not None:
+        st.write('')
+        st.write('')
+
         df = pd.read_csv(file_upload)
-        print(df.head())
-        st.write(df.head())  # Display the uploaded file's contents #d
-        #df.drop("Churn",inplace=True,axis=1)
+        df.drop("Churn",inplace=True,axis=1)
         
-        #temp
-        with open('../Model/Model_Processing/OneHotEncoder', 'rb') as f:
-            ohe = pickle.load(f)
-            #temp
+        if(content11.button('Predict')):
             
-
-        if(st.button('Predict')):
-            
-            #temp
-            cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents',    'PhoneService','MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
-
-                'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
-
-                'Contract', 'PaperlessBilling', 'PaymentMethod', 'MonthlyCharges',
-
-                'TotalCharges','tenure_group']
-    
- # Ensure all required columns are present
+            # Ensure all required columns are present
+            cols = ['gender', 'SeniorCitizen', 'Partner', 'Dependents', 'PhoneService',
+                    'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup',
+                    'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies',
+                    'Contract', 'PaperlessBilling', 'PaymentMethod', 'tenure_group']
             missing_features = set(cols) - set(df.columns)
             if missing_features:
                 st.error(f"Missing features in uploaded file: {missing_features}")
                 return
 
-            # Align DataFrame columns with encoder
-            try:
-                df_encoded = ohe.transform(df[cols])
-            except ValueError as e:
-                st.error(f"Encoding Error: {e}")
-                return
-
-                #temp
-            
-
             for i in range(1,len(df)-1):
 
-                predictor= df.iloc[i:i+1, :]  # Extract a single row of features
-                sb=preprocess_predictor_batch(predictor)
+                # Extract a single row of features
+                predictor= df.iloc[i:i+1, :]  
+                res=preprocess_predictor_batch(predictor)
                 
                  # Check the result of the prediction (assuming `sb` is a scalar)
-                if(sb==1):
-                    risk.append(df.iloc[i]['customerID'])
+                if(res[0]==1):
+                    row = df.iloc[i]
+                    if 'customerID' in df.columns:
+                        risk.append(row['customerID'])
+                    else:
+                        risk.append(f"Row-{i}")
+                    c=res[1]
+                    conf.append("{:.2f}%".format(c[0, 1] * 100))
 
-            st.write('''### Number of Potentially Churning Customers''')
-            st.write('''There are **{} customers** at risk of closing their accounts.'''.format(len(risk)))            
+                    
+                    det = {}
+                    for key in fields_to_keep:
+                        if key in row:
+                            det[key] = row[key]
+                    details.append(f"{det}")
 
-            dict={'cid':risk}
+   
+            st.info(''' ***Prediction output***- Potentially Churning Customers ''')
+            st.warning('''There are **{} customers** at risk of closing their accounts!'''.format(len(risk)))            
+
+            dict={'CustomerID':risk, 'Confidence':conf,'Details':details}
 
             csv = pd.DataFrame(dict).to_csv()
-
             b64 = base64.b64encode(csv.encode()).decode()
 
-            st.write('''''')
-            st.write('''''')
-            st.write('''### **Download Customer Id's at Risk⬇**''')
+            st.write("")
+            st.success('''**Download Customer ID's at Risk (with their respective confidence) ⬇**''')
+            st.write("")
 
-            href = f'<a href="data:file/csv;base64,{b64}" download="../Churnlytical_Output_CustomerId.csv">CSV File(Download)</a>'
-
+            href = f'<a href="data:file/csv;base64,{b64}" download="../CHURNLYTICAL_Batch_Processing_Output.csv">CSV File(Download)</a>'
             st.write(href, unsafe_allow_html=True)
-            st.write(risk)
+            st.caption(risk) 
 
+            st.write(" ")
+            st.write('---')
+             
 
-#main
+# MAIN APPLICATION 
 init()
 web_name.title("CHURNLYTICAL")
 side_logo.image(logo,width=350)
@@ -403,3 +417,5 @@ elif choice == "Login":
 elif choice == "SignUp":
     signup()
         
+
+# End of CHURNLYTICAL_App.py
