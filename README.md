@@ -108,5 +108,5 @@ This command will start the Streamlit application and open it in your default we
 
 Thank you for exploring the CHURNLYTICAL project. 
 
-<!--By following these instructions, you will be able to run the telecom churn prediction application and explore the provided Jupyter Notebooks for EDA and model building. The application will enable you to predict churn for individual customers or process a batch of customers using a CSV file.-->
+<!--By following these instructions, you will be able to run the telecom churn prediction application and explore the provided Jupyter Notebooks for EDA, model building. The application will enable you to predict churn for individual customers or process a batch of customers using a CSV file.-->
 
