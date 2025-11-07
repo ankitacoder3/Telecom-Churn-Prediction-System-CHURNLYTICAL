@@ -1,7 +1,7 @@
 <a name="readme-top"></a>
 # Telecom-Churn-Prediction-System-CHURNLYTICAL
   
-```CHURNLYTICAL``` ```predicts``` ```customer churn``` output in a ```telecom``` company.
+```CHURNLYTICAL``` ```predicts``` ```customer churn``` rate in a ```telecom``` company.
 
 <details>
   <summary color= blue >Table of Contents</summary>
